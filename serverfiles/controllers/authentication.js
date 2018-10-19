@@ -9,12 +9,23 @@ var codeToMessage={
   422:'NO SUCH ROUTE TO PROCESS',
   401:'ACCESS DENED INVALID DETAILS'
 }
-
+var authenticatedUsers={};
+var authenticatedId= [];
 var exports = module.exports;
 function addToken(id,token)
 {
+  if(authenticatedId.indexOf(id)==-1)
+  {
+    authenticatedId.push(id);
+    authenticatedUsers[id]=token;
+  }
+  else
+  {
+    authenticatedId.splice(authenticatedId.indexOf(id),1);
+    authenticatedUsers[id]=token;
+  }
   connection.run("DELETE FROM AUTHENTICATION WHERE clientId=?",[id],(err)=>{
-    connection.run('INSERT INTO AUTHENTICATION VALUES (?,?,?)',[id,token,Date.now()],(err)=>{
+    connection.run('INSERT INTO AUTHENTICATION VALUES (?,?,?)',[id,Date.now(),token],(err)=>{
       if(err)
       console.log(err);
     });
@@ -22,11 +33,9 @@ function addToken(id,token)
 }
 function ConvertToKey(string)
 {
-  return string.toLowerCase()
-     .split('')
-     .map((value)=> value.charCodeAt(0))
-     .reduce((accumulator,value)=> accumulator+value)*Date.now()
-     *Math.floor(Math.random()*1000);
+  var now = new Date();
+
+  return cryptr.encrypt(string+now.getMilliseconds);
 }
 exports.authenticate=(username,password)=>{
 
@@ -35,7 +44,7 @@ response.token=null;
 return new Promise((reslove,reject)=>{
 
     connection.get('SELECT * FROM USERS where username=?',[username],(error,row)=>{
-        
+        console.log(row);
        if(error)
         {
           console.log(error.message);
@@ -52,15 +61,25 @@ return new Promise((reslove,reject)=>{
         {
           response.statusCode=SUCCESS;
           response.status=codeToMessage[SUCCESS];
-          console.log(cryptr.decrypt(row.password));
-          console.log(password);
+         
+         
           if(cryptr.decrypt(row.password)==password)
           {
-           
+            console.log("SUCESSFUL");
+            response.token=ConvertToKey(username);
+            response.userInfo={};
+            response.userInfo.id=row.UID;
+            response.userInfo.username=row.username;
+            response .userInfo.firstname=row.firstname;
+            response.userInfo.role=row.role;
+            response.userInfo.lastname=row.lastname;
+            console.log(authenticatedId);
+            console.log(authenticatedUsers);
+            addToken(row.UID,response.token);
             response.statusCode=SUCCESS;
             response.status=codeToMessage[SUCCESS];
-            response.token=ConvertToKey(username);
-            addToken(row.UID,response.token);
+            response.id=row.UID;
+           
           }
           else
           {
@@ -73,19 +92,54 @@ return new Promise((reslove,reject)=>{
 
 });
 }
-exports.checkKey=(id,key)=>
+checkKey=(id,key)=>
 {
- return new Promise((reslove,reject)=>{
-    connection.get('SELECT clientKey from authentication where clientId=?',[id],(err,row)=>{
-    if(err)
-    reject(err.message);
+ 
+
+ return new Promise((reslove)=>{
+
+    if(authenticatedId.indexOf(id)!=-1)
+    {
+   
+          reslove(authenticatedUsers[id]==key?true:false); 
+    }
     else
     {
-       reslove(row!==null?(row.clientKey==key?true:false):false);
-    }  
- });
+      
+      connection.get('SELECT clientKey from authentication where clientId=?',[id],(err,row)=>{
+        if(err)
+        {
+          reject(err.message);
+          throw err;
+        
+        }
+        
+        else
+        {
+          
+          reslove(row!==undefined?(row.clientKey==key?true:false):false);
+        }  
+     });
+    }
+
 });
 }
+exports.validateRequest= (id,key)=>{
+  id=parseInt(id);
+
+  
+  return new Promise((resolve,reject)=>{
+     var response = checkKey(id,key);
+     response.then((value)=>{
+      
+          resolve(value==true?{access:true}:{access:false});
+     }).catch((err)=>{
+      
+          reslove({access:false});
+     });
+  });
+}
+
 exports.encrypt=(string)=>
 {
     return cryptr.encrypt(string);
