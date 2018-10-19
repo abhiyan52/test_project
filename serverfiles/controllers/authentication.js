@@ -44,7 +44,7 @@ response.token=null;
 return new Promise((reslove,reject)=>{
 
     connection.get('SELECT * FROM USERS where username=?',[username],(error,row)=>{
-        console.log(row);
+    
        if(error)
         {
           console.log(error.message);
@@ -73,8 +73,7 @@ return new Promise((reslove,reject)=>{
             response .userInfo.firstname=row.firstname;
             response.userInfo.role=row.role;
             response.userInfo.lastname=row.lastname;
-            console.log(authenticatedId);
-            console.log(authenticatedUsers);
+ 
             addToken(row.UID,response.token);
             response.statusCode=SUCCESS;
             response.status=codeToMessage[SUCCESS];
