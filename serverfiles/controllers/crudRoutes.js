@@ -26,7 +26,7 @@ exports.getSingle = (req,res)=>{
         response.result=[];
         var connection= connectToDb.connect();
         var id = parseInt(req.params.id);
-        connection.get('SELECT firstname,lastname,username,role from users where uid=?',[id],(err,row)=>{
+        connection.get('SELECT * from users where uid=?',[id],(err,row)=>{
           if(err)
           {
             response.error=err.message;
@@ -65,21 +65,21 @@ exports.getUser = (req,res)=>{
     var params =[];
     if(type===0)
     {
-      sql = `select u.uid,u.firstname,u.lastname,u.username,u.role from users u`;
+      sql = `select u.uid,u.firstname,u.lastname,u.username,u.role,u.email,u.cdate from users u`;
       params=[];
      
       
     }
     else if(type==1)
     {
-      sql=`select u.uid,u.firstname,u.lastname,u.username,u.role from users u,ADMINUSER a WHERE a.UID=u.UID and a.AID=?`;
+      sql=`select u.uid,u.firstname,u.lastname,u.username,u.role,u.email,u.cdate from users u,ADMINUSER a WHERE a.UID=u.UID and a.AID=?`;
       params=[value];
      
   
     }
     else if(type==2)
     {
-      sql=`select u.uid,u.firstname,u.lastname,u.username,u.role from users u,ADMINSUPER a WHERE a.AID=u.UID and a.SID=?`;
+      sql=`select u.uid,u.firstname,u.lastname,u.username,u.role,u.email,u.cdate from users u,ADMINSUPER a WHERE a.AID=u.UID and a.SID=?`;
       params=[value];
     }
     else
@@ -127,14 +127,14 @@ exports.getUser = (req,res)=>{
   
 exports.addUser = function(req,res){
   
-          
+       
         
           var aid=req.body.aid;
           var sid=req.body.sid;
           var connection = connectToDb.connect();
          
-          var insertSQL= ` INSERT INTO USERS (firstname,lastname,username,password,role) VALUES(?,?,?,?,?)`;
-          connection.run(insertSQL,[req.body.firstname,req.body.lastname,req.body.username,authentication.encrypt(req.body.password),req.body.role],(result,err)=>{
+          var insertSQL= ` INSERT INTO USERS (firstname,lastname,username,password,role,email,cdate) VALUES(?,?,?,?,?,?,?)`;
+          connection.run(insertSQL,[req.body.firstname,req.body.lastname,req.body.username,authentication.encrypt(req.body.password),req.body.role,req.body.email,new Date().toDateString()],(result,err)=>{
 
             if(err)
                  {
@@ -142,12 +142,12 @@ exports.addUser = function(req,res){
                  }
                  else
                  {
-                 
-                  
-                   
-                connection.get('select * from users order by uid desc limit 1',(err,row)=>{
+                       connection.get('select * from users order by uid desc limit 1',(err,row)=>{
                        if(err)
-                       res.send(generateResponse(500,[],err.message));
+                       {
+                      res.send(generateResponse(500,[],err.message));
+                       }
+                       
                        else
                        {
                           
@@ -173,6 +173,7 @@ exports.addUser = function(req,res){
   var connection = connectToDb.connect();
   var username = req.body.username;
   connection.all('SELECT username from users',(err,row)=>{
+
     let flag = row.map(value=>value.username).indexOf(username)==-1?true:false;
     if(flag==true)
     {
@@ -180,6 +181,7 @@ exports.addUser = function(req,res){
     }
     else
     {
+    
       res.send (generateResponse(401,[],null));
     }
        
@@ -245,7 +247,7 @@ exports.modify = (req,res)=>{
               resolve(generateResponse(SERVER_ERROR,[],err.message));
                });
             
-          connection.run(`INSERT INTO USERS VALUES (?,?,?,?,?,?)`,[id,row.firstname,row.lastname,row.username,row.password,row.role],(err)=>{
+          connection.run(`INSERT INTO USERS VALUES (?,?,?,?,?,?,?,?)`,[id,row.firstname,row.lastname,row.username,row.password,row.role,row.email,row.cdate],(err)=>{
             if(err)
             resolve(generateResponse(SERVER_ERROR,[],err.message));
            else

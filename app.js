@@ -3,9 +3,11 @@ var bodyparser = require('body-parser');
 var app = express();
 var getUsers= require('./serverfiles/controllers/crudRoutes.js');
 var authentication = require('./serverfiles/controllers/authentication');
+var PORT =3000;
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended :true}));
+app.use(express.static('./public'));
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -13,6 +15,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
     });
+
 app.post('/authorize',getUsers.authenticateUser);
 
 app.use((req,res,next)=>{
@@ -42,4 +45,9 @@ app.get('/*', function(req, res) {
     });
 });
 app.post('/authorize',getUsers.authenticateUser);
-app.listen(3000);
+app.listen(PORT,(err)=>{
+    if(err)
+    throw err;
+    else
+    console.log(`APP RUNNING AT ${PORT} visit @ http://localhost:${PORT}`);
+});

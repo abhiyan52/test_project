@@ -65,15 +65,14 @@ return new Promise((reslove,reject)=>{
          
           if(cryptr.decrypt(row.password)==password)
           {
-            console.log("SUCESSFUL");
             response.token=ConvertToKey(username);
             response.userInfo={};
-            response.userInfo.id=row.UID;
-            response.userInfo.username=row.username;
-            response .userInfo.firstname=row.firstname;
-            response.userInfo.role=row.role;
-            response.userInfo.lastname=row.lastname;
- 
+            response.userInfo=row;
+            // response.userInfo.id=row.UID;
+            // response.userInfo.username=row.username;
+            // response .userInfo.firstname=row.firstname;
+            // response.userInfo.role=row.role;
+            // response.userInfo.lastname=row.lastname;
             addToken(row.UID,response.token);
             response.statusCode=SUCCESS;
             response.status=codeToMessage[SUCCESS];
