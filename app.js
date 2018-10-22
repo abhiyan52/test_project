@@ -37,6 +37,7 @@ app.use((req,res,next)=>{
 app.get('/users/:type/:name',getUsers.getUser);
 app.get('/user/:id',getUsers.getSingle);
 app.post('/users',getUsers.validUserNameMiddleWare,getUsers.addUser);
+app.post('/users',getUsers.addUser);
 app.post('/modifyUser',getUsers.modify);
 app.get('/*', function(req, res) {
     res.json({

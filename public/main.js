@@ -331,7 +331,7 @@ module.exports = ".container-fluid\n{\n    padding:10px;\n}\n*{\n    padding  : 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n <div class=\"row\">\n<div class=\"col-md-2\">\n\n     <div class=\"vertical-menu\">\n        <button class=\"button\" (click)=\"addUser($event)\"><span>Add Admin </span></button>\n      <a [id]=\"adminList.indexOf(admin)\" (click)=\"displayAdmin($event)\" *ngFor=\"let admin of adminList\">{{admin.firstname}}</a>\n     </div>\n\n     </div>\n     \n   <div class=\"col-md-10\" *ngFor=\"let admin of adminList\">\n        <ng-template [ngIf]=\"selectedAdmin==adminList.indexOf(admin)\">\n            <div class=\"col-md-10\">\n                <div class=\"row\">\n                  <div class=\"col-md-2\">\n                    <img src=\"../../assets/user.png\" class=\"img img-responsive img-circle\">\n                  </div>\n                  <div class=\"col-md-10\">\n                    <h3 class=\"text-primary\">Admin Details</h3>\n                    <p class=\"myfont\">Name:{{adminList[selectedAdmin].firstname}} {{adminList[selectedAdmin].lastname}}</p>\n                    <p class=\"myfont\">Username:{{adminList[selectedAdmin].username}}</p>\n                    <p class=\"myfont\">Email:{{adminList[selectedAdmin].email}}</p>\n                    <p class=\"myfont\">Date:{{adminList[selectedAdmin].cdate}}</p>\n              \n                    \n                  </div>\n                </div>\n                <app-display (adminDeleteEvent)=\"destroyAdmin($event)\"  [id]=\"admin.UID\"></app-display>\n             </div> \n         </ng-template>\n     </div>\n\n   \n  </div>\n</div>\n\n\n<div class=\"modal\" *ngIf=\"add\">\n  <span (click)=\"addUser()\" class=\"close\" title=\"Close Modal\">&times;</span>\n  <form class=\"modal-content\" #userForm=\"ngForm\" (ngSubmit)=\"addNewUser(userForm.value)\">\n    <div class=\"container\">\n      <h1>ADD USER</h1>\n      <p>Please fill in this form to create a new user.</p>\n      <hr>\n      <label for=\"firstname\"><b>Firstname</b></label>\n      <input ngModel #fnameRef=\"ngModel\"  type=\"text\" placeholder=\"Enter Firstname\" name=\"firstname\" required>\n      <div [hidden]=\"fnameRef.valid || fnameRef.pristine\" class=\"alert alert-danger\">\n        Firstname cannot be empty   \n      </div>\n      <label for=\"lastname\"><b>Lastname</b></label>\n      <input ngModel #lnameRef=\"ngModel\"  type=\"text\" placeholder=\"Enter Lastname\" name=\"lastname\" required>\n      <div [hidden]=\"lnameRef.valid || lnameRef.pristine\" class=\"alert alert-danger\">\n        Lastname cannot be empty   \n      </div>\n      <label for=\"username\"><b>Username</b></label>\n      <input #unameRef=\"ngModel\" ngModel type=\"text\" placeholder=\"Enter Username\" pattern=\"[a-z]*\" name=\"username\" required>\n       <div [hidden]=\"unameRef.valid || unameRef.pristine || !unameRef.errors.pattern\" class=\"alert alert-danger\">\n        Username cannot be empty  and should only consist of lowercase \n      </div>\n      <label for=\"Password\"><b>Password</b></label>\n      <input #passRef=\"ngModel\" ngModel type=\"password\" placeholder=\"Enter Password\" name=\"password\" required>\n      <div [hidden]=\"passRef.valid || passRef.pristine\" class=\"alert alert-danger\">\n        Password cannot be empty   \n      </div>\n    \n      <label for=\"email\"><b>Email</b></label>\n      <input #eRef=\"ngModel\" ngModel  type=\"text\" placeholder=\"Enter Email\" name=\"email\" required>\n      <div [hidden]=\"eRef.valid || eRef.pristine\" class=\"alert alert-danger\">\n        Email cannot be empty   \n      </div>\n\n    <div class=\"clearfix\">\n        <button type=\"button\" (click)=\"addUser($event)\" class=\" button cancelbtn\">Cancel</button>\n        <button [disabled]=\"!userForm.form.valid\" type=\"submit\" class=\" button signupbtn\">Add Admin</button>\n      </div>\n    </div>\n  </form>\n</div>\n\n   "
+module.exports = "<div class=\"container-fluid\">\n <div class=\"row\">\n<div class=\"col-md-2\">\n\n     <div class=\"vertical-menu\">\n        <button class=\"button\" (click)=\"addUser($event)\"><span>Add Admin </span></button>\n      <a [id]=\"adminList.indexOf(admin)\" (click)=\"displayAdmin($event)\" *ngFor=\"let admin of adminList\">{{admin.firstname}}</a>\n     </div>\n\n     </div>\n     \n   <div class=\"col-md-10\" *ngFor=\"let admin of adminList\">\n        <ng-template [ngIf]=\"selectedAdmin==adminList.indexOf(admin)\">\n            <div class=\"col-md-10\">\n                <div class=\"row\">\n                  <div class=\"col-md-2\">\n                    <img src=\"../../assets/user.png\" class=\"img img-responsive img-circle\">\n                  </div>\n                  <div class=\"col-md-10\">\n                    \n                   \n             <button title=\"Edit form\" style=\"float:right;padding: 2px;\" *ngIf=\"!editAdmin\" (click)=\"editAdmin=!editAdmin\" class=\"btn btn-info\">Edit</button>\n               <span  title=\"Close Form\" *ngIf=\"editAdmin\" (click)=\"editAdmin=!editAdmin\" style=\"float:right;font-size:50px;\n               cursor: pointer;\n               \">&times;</span> \n               <div *ngIf=\"!editAdmin\"> \n                  <h3 class=\"text-primary\">Admin Details</h3>\n                  <div *ngFor=\"let field of objectKeys(adminList[selectedAdmin])\">\n                   <span *ngIf=\"field!='UID' && field!='cdate' && field!='role'\">\n                       <p  class=\"myfont\">{{field.toUpperCase()}}:\n                         <span *ngIf=\"!editField\">{{adminList[selectedAdmin][field]}}</span> \n                       </p>\n                       \n                   </span>  \n                   \n                   </div>\n               </div>\n               <app-useredit (dbEvent)=\"perform($event)\" [toEdit]=\"adminList[selectedAdmin]\" *ngIf=\"editAdmin\"></app-useredit> \n                </div>\n                </div>\n                \n                <app-display (adminDeleteEvent)=\"destroyAdmin($event)\"  [id]=\"admin.UID\"></app-display>\n             </div> \n         </ng-template>\n     </div>\n\n   \n  </div>\n</div>\n\n\n<div class=\"modal\" *ngIf=\"add\">\n  <span (click)=\"addUser()\" class=\"close\" title=\"Close Modal\">&times;</span>\n  <form class=\"modal-content\" #userForm=\"ngForm\" (ngSubmit)=\"addNewUser(userForm.value)\">\n    <div class=\"container\">\n      <h1>ADD USER</h1>\n      <p>Please fill in this form to create a new user.</p>\n      <hr>\n      <label for=\"firstname\"><b>Firstname</b></label>\n      <input ngModel #fnameRef=\"ngModel\"  type=\"text\" placeholder=\"Enter Firstname\" name=\"firstname\" required>\n      <div [hidden]=\"fnameRef.valid || fnameRef.pristine\" class=\"alert alert-danger\">\n        Firstname cannot be empty   \n      </div>\n      <label for=\"lastname\"><b>Lastname</b></label>\n      <input ngModel #lnameRef=\"ngModel\"  type=\"text\" placeholder=\"Enter Lastname\" name=\"lastname\" required>\n      <div [hidden]=\"lnameRef.valid || lnameRef.pristine\" class=\"alert alert-danger\">\n        Lastname cannot be empty   \n      </div>\n      <label for=\"username\"><b>Username</b></label>\n      <input #unameRef=\"ngModel\" [(ngModel)]=\"username\" (keyup)=\"haze($event)\" type=\"text\" placeholder=\"Enter Username\" pattern=\"[a-z]*\" name=\"username\" required>\n       <div  [hidden]=\"unameRef.valid || unameRef.pristine || !unameRef.errors.pattern\" class=\"alert alert-danger\">\n        Username cannot be empty  and should only consist of lowercase and should be atleast 5 characters \n      </div>\n      <div [hidden]=\"usernameStatus\"  class=\"alert alert-danger\">\n        Sorry this username exists in our database\n      </div>\n      <label for=\"Password\"><b>Password</b></label>\n      <input #passRef=\"ngModel\" ngModel type=\"password\" placeholder=\"Enter Password\" name=\"password\" required>\n      <div [hidden]=\"passRef.valid || passRef.pristine\" class=\"alert alert-danger\">\n        Password cannot be empty   \n      </div>\n    \n      <label for=\"email\"><b>Email</b></label>\n      <input #eRef=\"ngModel\" ngModel  type=\"text\" placeholder=\"Enter Email\" name=\"email\" required>\n      <div [hidden]=\"eRef.valid || eRef.pristine\" class=\"alert alert-danger\">\n        Email cannot be empty   \n      </div>\n\n    <div class=\"clearfix\">\n        <button type=\"button\" (click)=\"addUser($event)\" class=\" button cancelbtn\">Cancel</button>\n        <button [disabled]=\"!(userForm.form.valid && usernameStatus)\" type=\"submit\" class=\" button signupbtn\">Add Admin</button>\n      </div>\n    </div>\n  </form>\n</div>\n\n   "
 
 /***/ }),
 
@@ -364,6 +364,10 @@ var DisplaySuperComponent = /** @class */ (function () {
     function DisplaySuperComponent(httpHandle, credentials) {
         this.httpHandle = httpHandle;
         this.credentials = credentials;
+        this.objectKeys = Object.keys;
+        this.editAdmin = false;
+        this.usernameList = undefined;
+        this.usernameStatus = true;
         this.add = false;
         this.adminList = [
             {
@@ -415,6 +419,37 @@ var DisplaySuperComponent = /** @class */ (function () {
             }
         });
     };
+    DisplaySuperComponent.prototype.haze = function (event) {
+        var _this = this;
+        this.usernameStatus = true;
+        if (this.usernameList == undefined)
+            this.httpHandle.getUserList('users/0/1', {
+                id: this.credentials.getToken.id,
+                token: this.credentials.getToken.token
+            }).subscribe(function (data) {
+                _this.usernameList = data.result.map(function (element) { return element.username; });
+                if (_this.usernameList.indexOf(_this.username) != -1)
+                    _this.usernameStatus = false;
+            });
+        else {
+            if (this.usernameList.indexOf(this.username) != -1)
+                this.usernameStatus = false;
+        }
+    };
+    DisplaySuperComponent.prototype.perform = function (event) {
+        var _this = this;
+        this.editAdmin = false;
+        this.httpHandle.postRequestWithCredentials("modifyUser", {
+            id: this.credentials.getToken.id,
+            token: this.credentials.getToken.token
+        }, event).subscribe(function () {
+            var url = "users/2/" + _this.credentials.getToken.id;
+            _this.httpHandle.getData1(url, _this.credentials.getToken);
+            _this.httpHandle.callComplete1.subscribe(function (data) {
+                _this.adminList = data.result;
+            });
+        });
+    };
     DisplaySuperComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-display-super',
@@ -448,7 +483,7 @@ module.exports = "table {\n    border-collapse: collapse;\n    border-spacing: 0
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<span title=\"Close Form\" style=\"font-size: 30px;float: right;cursor: pointer; background-color: burlywood;border-radius: 50%;\" *ngIf=\"updateFlag\" (click)=\"updateFlag=false\" >&times;</span>\n\n<div class=\"container\">\n  <div *ngIf=\"dataLoaded && !updateFlag\"  class=\"row\">\n  <div style=\"position:absolute;\n  right:0px;\">\n   <button t=\"del\"  [id]=\"adminId\" *ngIf=\"adminId!=credentials.getToken.id\" (click)=\"delete($event)\"  [ngClass]=\"(userList.length==0)?'enabled':'disabled'\" class=\"btn btn-danger\">DELETE ADMIN</button> \n  <button class=\"btn btn-primary\" (click)=\"addUser($event)\" style=\"width:auto;\">Add User</button>\n  </div>\n  \n    <br>\n    <br>\n      <table class=\"table table-striped table-dark\">\n          <thead>\n               <tr>\n                 <th>#</th>\n                 <th>Firstname</th>\n                 <th>Lastname</th>\n                 <th>Username</th>\n                 <th>Role</th>\n                 <th>Email</th>\n                 <th>Date</th>\n                 <th>Actions</th>\n               </tr>\n             </thead>\n             <tbody>\n              \n          <tr *ngFor=\"let user of userList\" class=\"table-info\">\n                 <th scope=\"row\">{{user.UID}}</th>\n                 <td>{{user.firstname}}</td>\n                 <td>{{user.lastname}}</td>\n                 <td>{{user.username}}</td>\n                 <td>{{user.role}}</td>\n                 <td>{{user.email}}</td>\n                 <td>{{user.cdate}}</td>\n                \n                 <td>\n                     <button [id]=\"userList.indexOf(user)\" (click)=\"update($event)\" class=\"btn btn-primary mybtn\">Update</button>\n                     <button [id]=\"user.UID\" (click)=\"delete($event)\" class=\"btn btn-danger mybtn \">Delete</button>\n                 </td>  \n           </tr>\n            \n             </tbody>\n             </table>\n  </div>\n  <div *ngIf=\"!dataLoaded\">\n    Loading...\n    <div   class=\"loader\">\n  \n    </div>\n  </div>\n</div>\n\n<app-useredit (dbEvent)=\"perform($event)\" [toEdit]=\"toUpdate\" *ngIf=\"updateFlag\"></app-useredit>\n<div class=\"modal\" *ngIf=\"add\">\n  <span (click)=\"addUser()\" class=\"close\" title=\"Close Modal\">&times;</span>\n  <form class=\"modal-content\" #userForm=\"ngForm\" (ngSubmit)=\"addNewUser(userForm.value)\">\n    <div class=\"container\">\n      <h1>ADD USER</h1>\n      <p>Please fill in this form to create a new user.</p>\n      <hr>\n      <label for=\"firstname\"><b>Firstname</b></label>\n      <input ngModel #fnameRef=\"ngModel\"  type=\"text\" placeholder=\"Enter Firstname\" name=\"firstname\" required>\n      <div [hidden]=\"fnameRef.valid || fnameRef.pristine\" class=\"alert alert-danger\">\n        Firstname cannot be empty   \n      </div>\n      <label for=\"lastname\"><b>Lastname</b></label>\n      <input ngModel #lnameRef=\"ngModel\"  type=\"text\" placeholder=\"Enter Lastname\" name=\"lastname\" required>\n      <div [hidden]=\"lnameRef.valid || lnameRef.pristine\" class=\"alert alert-danger\">\n        Lastname cannot be empty   \n      </div>\n      <label for=\"username\"><b>Username</b></label>\n      <input #unameRef=\"ngModel\" ngModel type=\"text\" placeholder=\"Enter Username\" pattern=\"[a-z]*\" name=\"username\" required>\n       <div [hidden]=\"unameRef.valid || unameRef.pristine || !unameRef.errors.pattern\" class=\"alert alert-danger\">\n        Username cannot be empty  and should only consist of lowercase \n      </div>\n      <label for=\"Password\"><b>Password</b></label>\n      <input #passRef=\"ngModel\" ngModel type=\"password\" placeholder=\"Enter Password\" name=\"password\" required>\n      <div [hidden]=\"passRef.valid || passRef.pristine\" class=\"alert alert-danger\">\n        Password cannot be empty   \n      </div>\n    \n      <label for=\"email\"><b>Email</b></label>\n      <input #eRef=\"ngModel\" ngModel  type=\"text\" placeholder=\"Enter Email\" name=\"email\" required>\n      <div [hidden]=\"eRef.valid || eRef.pristine\" class=\"alert alert-danger\">\n        Email cannot be empty   \n      </div>\n\n    <div class=\"clearfix\">\n        <button type=\"button\" (click)=\"addUser($event)\" class=\" button cancelbtn\">Cancel</button>\n        <button [disabled]=\"!userForm.form.valid\" type=\"submit\" class=\" button signupbtn\">Add User</button>\n      </div>\n    </div>\n  </form>\n</div>\n\n\n\n\n"
+module.exports = "<span title=\"Close Form\" style=\"font-size: 30px;float: right;cursor: pointer; background-color: burlywood;border-radius: 50%;\" *ngIf=\"updateFlag\" (click)=\"updateFlag=false\" >&times;</span>\n\n<div class=\"container\">\n  <div *ngIf=\"dataLoaded && !updateFlag\"  class=\"row\">\n  <div style=\"position:absolute;\n  right:0px;\">\n   <button t=\"del\"  [id]=\"adminId\" *ngIf=\"adminId!=credentials.getToken.id\" (click)=\"delete($event)\"  [ngClass]=\"(userList.length==0)?'enabled':'disabled'\" class=\"btn btn-danger\">DELETE ADMIN</button> \n  <button class=\"btn btn-primary\" (click)=\"addUser($event)\" style=\"width:auto;\">Add User</button>\n  </div>\n  \n    <br>\n    <br>\n      <table *ngIf=\"userList.length else nouser\" class=\"table table-striped table-dark\">\n          <thead>\n               <tr>\n                 <th>#</th>\n                 <th>Firstname</th>\n                 <th>Lastname</th>\n                 <th>Username</th>\n                 <th>Role</th>\n                 <th>Email</th>\n                 <th>Date</th>\n                 <th>Actions</th>\n               </tr>\n             </thead>\n             <tbody>\n              \n          <tr *ngFor=\"let user of userList\" class=\"table-info\">\n                 <th scope=\"row\">{{user.UID}}</th>\n                 <td>{{user.firstname}}</td>\n                 <td>{{user.lastname}}</td>\n                 <td>{{user.username}}</td>\n                 <td>{{user.role}}</td>\n                 <td>{{user.email}}</td>\n                 <td>{{user.cdate}}</td>\n                \n                 <td>\n                     <button [id]=\"userList.indexOf(user)\" (click)=\"update($event)\" class=\"btn btn-primary mybtn\">Update</button>\n                     <button [id]=\"user.UID\" (click)=\"delete($event)\" class=\"btn btn-danger mybtn \">Delete</button>\n                 </td>  \n           </tr>\n            \n             </tbody>\n             </table>\n            <ng-template #nouser>\n             <h1>NO USERS FOR THIS ADMIN WERE FOUND</h1>\n            </ng-template>\n            </div>\n  <div *ngIf=\"!dataLoaded\">\n    Loading...\n    <div   class=\"loader\">\n  \n    </div>\n  </div>\n</div>\n\n<app-useredit (dbEvent)=\"perform($event)\" [toEdit]=\"toUpdate\" *ngIf=\"updateFlag\"></app-useredit>\n<div class=\"modal\" *ngIf=\"add\">\n  <span (click)=\"addUser()\" class=\"close\" title=\"Close Modal\">&times;</span>\n  <form class=\"modal-content\" #userForm=\"ngForm\" (ngSubmit)=\"addNewUser(userForm.value)\">\n    <div class=\"container\">\n      <h1>ADD USER</h1>\n      <p>Please fill in this form to create a new user.</p>\n      <hr>\n      <label for=\"firstname\"><b>Firstname</b></label>\n      <input ngModel #fnameRef=\"ngModel\"  type=\"text\" placeholder=\"Enter Firstname\" name=\"firstname\" required>\n      <div [hidden]=\"fnameRef.valid || fnameRef.pristine\" class=\"alert alert-danger\">\n        Firstname cannot be empty   \n      </div>\n      <label for=\"lastname\"><b>Lastname</b></label>\n      <input ngModel #lnameRef=\"ngModel\"  type=\"text\" placeholder=\"Enter Lastname\" name=\"lastname\" required>\n      <div [hidden]=\"lnameRef.valid || lnameRef.pristine\" class=\"alert alert-danger\">\n        Lastname cannot be empty   \n      </div>\n      <label for=\"username\"><b>Username</b></label>\n      <input #unameRef=\"ngModel\" [(ngModel)]=\"username\" (keyup)=\"haze($event)\" type=\"text\" placeholder=\"Enter Username\" pattern=\"[a-z]*\" name=\"username\" required>\n       <div  [hidden]=\"unameRef.valid || unameRef.pristine || !unameRef.errors.pattern\" class=\"alert alert-danger\">\n        Username cannot be empty  and should only consist of lowercase and should be atleast 5 characters \n      </div>\n      <div [hidden]=\"usernameStatus\"  class=\"alert alert-danger\">\n        Sorry this username exists in our database\n      </div>\n      <label for=\"Password\"><b>Password</b></label>\n      <input #passRef=\"ngModel\" ngModel type=\"password\" placeholder=\"Enter Password\" name=\"password\" required>\n      <div [hidden]=\"passRef.valid || passRef.pristine\" class=\"alert alert-danger\">\n        Password cannot be empty   \n      </div>\n    \n      <label for=\"email\"><b>Email</b></label>\n      <input #eRef=\"ngModel\" ngModel  type=\"text\" placeholder=\"Enter Email\" name=\"email\" required>\n      <div [hidden]=\"eRef.valid || eRef.pristine\" class=\"alert alert-danger\">\n        Email cannot be empty   \n      </div>\n\n    <div class=\"clearfix\">\n        <button type=\"button\" (click)=\"addUser($event)\" class=\" button cancelbtn\">Cancel</button>\n        <button [disabled]=\"!(userForm.form.valid && usernameStatus)\" type=\"submit\" class=\" button signupbtn\">Add User</button>\n      </div>\n    </div>\n  </form>\n</div>\n\n\n\n\n"
 
 /***/ }),
 
@@ -481,18 +516,13 @@ var DisplayComponent = /** @class */ (function () {
     function DisplayComponent(credentials, httpHandle) {
         this.credentials = credentials;
         this.httpHandle = httpHandle;
+        this.usernameList = undefined;
+        this.usernameStatus = true;
         this.adminDel = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
         this.dataLoaded = false;
         this.updateFlag = false;
         this.add = false;
-        this.userList = [{
-                uid: 1,
-                firstname: 'Abhiyan',
-                lastname: 'Timilsina',
-                username: 'abhiyan',
-                role: 'user'
-            }
-        ];
+        this.userList = [];
     }
     DisplayComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -521,7 +551,7 @@ var DisplayComponent = /** @class */ (function () {
         this.httpHandle.postRequestWithCredentials(url, {
             id: this.credentials.getToken.id,
             token: this.credentials.getToken.token
-        }, event).subscribe(function () {
+        }, event).subscribe(function (data) {
             var url = "users/1/" + _this.adminId;
             _this.httpHandle.getData(url, { id: _this.credentials.getToken.id,
                 token: _this.credentials.getToken.token
@@ -562,6 +592,23 @@ var DisplayComponent = /** @class */ (function () {
             });
         });
     };
+    DisplayComponent.prototype.haze = function (event) {
+        var _this = this;
+        this.usernameStatus = true;
+        if (this.usernameList == undefined)
+            this.httpHandle.getUserList('users/0/1', {
+                id: this.credentials.getToken.id,
+                token: this.credentials.getToken.token
+            }).subscribe(function (data) {
+                _this.usernameList = data.result.map(function (element) { return element.username; });
+                if (_this.usernameList.indexOf(_this.username) != -1)
+                    _this.usernameStatus = false;
+            });
+        else {
+            if (this.usernameList.indexOf(this.username) != -1)
+                this.usernameStatus = false;
+        }
+    };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])('adminDeleteEvent'),
         __metadata("design:type", Object)
@@ -592,7 +639,7 @@ var DisplayComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = " *\n {\n     margin: 0px;\n     padding:0px;\n }\n .main\n{\n    position:absolute;\n    width:100%;\n    height:100%;\n\tmargin: 0;\n\tpadding: 0;\n    background: url('bg.jpg');\n    opacity: 1.0;\n\tbackground-size: cover;\n\tfont-family: sans-serif;\n}\n .loginBox\n{\n\tposition: absolute;\n\ttop: 50%;\n\tleft: 50%;\n\t-webkit-transform: translate(-50%,-50%);\n\t        transform: translate(-50%,-50%);\n\twidth: 350px;\n\theight: 420px;\n\tpadding: 80px 40px;\n\tbox-sizing: border-box;\n\tbackground: rgba(0,0,0,.5);\n}\n .user\n{\n\twidth: 100px;\n\theight: 100px;\n\tborder-radius: 50%;\n\toverflow: hidden;\n\tposition: absolute;\n\ttop: calc(-100px/2);\n\tleft: calc(50% - 50px);\n}\n h2\n{\n\tmargin: 0;\n\tpadding: 0 0 20px;\n\tcolor: #efed40;\n\ttext-align: center;\n}\n .loginBox p\n{\n\tmargin: 0;\n\tpadding: 0;\n\tfont-weight: bold;\n\tcolor: #fff;\n}\n .loginBox input\n{\n\twidth: 100%;\n\tmargin-bottom: 20px;\n}\n .loginBox input[type=\"text\"],\n.loginBox input[type=\"password\"]\n{\n\tborder: none;\n\tborder-bottom: 1px solid #fff;\n\tbackground: transparent;\n\toutline: none;\n\theight: 40px;\n\tcolor: #fff;\n\tfont-size: 16px;\n}\n ::-webkit-input-placeholder\n{\n\tcolor: rgba(255,255,255,.5);\n}\n ::-ms-input-placeholder\n{\n\tcolor: rgba(255,255,255,.5);\n}\n ::placeholder\n{\n\tcolor: rgba(255,255,255,.5);\n}\n .loginBox input[type=\"submit\"]\n{\n\tborder: none;\n\toutline: none;\n\theight: 40px;\n\tcolor: #fff;\n\tfont-size: 16px;\n\tbackground: #ff267e;\n\tcursor: pointer;\n\tborder-radius: 20px;\n}\n .loginBox input[type=\"submit\"]:hover\n{\n\tbackground: #efed40;\n\tcolor: #262626;\n}\n .loginBox a\n{\n\tcolor: #fff;\n\tfont-size: 14px;\n\tfont-weight: bold;\n\ttext-decoration: none;\n}\n"
+module.exports = " *\n {\n     margin: 0px;\n     padding:0px;\n }\n .main\n{\n    position:absolute;\n    width:100%;\n    height:100%;\n\tmargin: 0;\n\tpadding: 0;\n    background: url('bg.jpg');\n    opacity: 1.0;\n\tbackground-size: cover;\n\tfont-family: sans-serif;\n}\n .loginBox\n{\n\tposition: absolute;\n\ttop: 50%;\n\tleft: 50%;\n\t-webkit-transform: translate(-50%,-50%);\n\t        transform: translate(-50%,-50%);\n\twidth: 350px;\n\theight: 420px;\n\tpadding: 80px 40px;\n\tbox-sizing: border-box;\n\tbackground: rgba(0,0,0,.5);\n}\n .user\n{\n\twidth: 100px;\n\theight: 100px;\n\tborder-radius: 50%;\n\toverflow: hidden;\n\tposition: absolute;\n\ttop: calc(-100px/2);\n\tleft: calc(50% - 50px);\n}\n h2\n{\n\tmargin: 0;\n\tpadding: 0 0 20px;\n\tcolor: #efed40;\n\ttext-align: center;\n}\n .loginBox p\n{\n\tmargin: 0;\n\tpadding: 0;\n\tfont-weight: bold;\n\tcolor: #fff;\n}\n .loginBox input\n{\n\twidth: 100%;\n\tmargin-bottom: 20px;\n}\n .loginBox input[type=\"text\"],\n.loginBox input[type=\"password\"]\n{\n\tborder: none;\n\tborder-bottom: 1px solid #fff;\n\tbackground: transparent;\n\toutline: none;\n\theight: 40px;\n\tcolor: #fff;\n\tfont-size: 16px;\n}\n ::-webkit-input-placeholder\n{\n\tcolor: rgba(255,255,255,.5);\n}\n ::-ms-input-placeholder\n{\n\tcolor: rgba(255,255,255,.5);\n}\n ::placeholder\n{\n\tcolor: rgba(255,255,255,.5);\n}\n .loginBox input[type=\"submit\"]\n{\n\tborder: none;\n\toutline: none;\n\theight: 40px;\n\tcolor: #fff;\n\tfont-size: 16px;\n\tbackground: #ff267e;\n\tcursor: pointer;\n\tborder-radius: 20px;\n}\n .loginBox input[type=\"submit\"]:hover\n{\n\tbackground: #efed40;\n\tcolor: #262626;\n}\n .loginBox a\n{\n\tcolor: #fff;\n\tfont-size: 14px;\n\tfont-weight: bold;\n\ttext-decoration: none;\n}\n #myNav\n{\n\twidth:100%;\n}\n .overlay {\n    height: 100%;\n    width: 0;\n    position: fixed;\n    z-index: 1;\n    top: 0;\n    left: 0;\n    background-color: rgb(0,0,0);\n    background-color: rgba(0,0,0, 0.9);\n    overflow-x: hidden;\n    transition: 0.5s;\n}\n .overlay-content {\n\tcolor:white;\n\tfont-family: 'Courier New', Courier, monospace;\n\tfont-size:20px;\n    position: absolute;\n\ttop: 10%;\n\tleft:0%;\n    width: 100%;\n    text-align: left;\n    margin-top: 30px;\n}\n .overlay a {\n    padding: 8px;\n    text-decoration: none;\n    font-size: 36px;\n    color: #818181;\n    display: block;\n    transition: 0.3s;\n}\n .overlay a:hover, .overlay a:focus {\n    color: #f1f1f1;\n}\n .overlay .closebtn {\n    position: absolute;\n    top: 20px;\n    right: 45px;\n    font-size: 60px;\n}\n @media screen and (max-height: 450px) {\n  .overlay a {font-size: 20px}\n  .overlay .closebtn {\n    font-size: 40px;\n    top: 15px;\n    right: 35px;\n  }\n}\n .container {\n    position: relative;\n    width: 50%;\n}\n .image {\n  opacity: 1;\n  display: block;\n  width: 100%;\n  height: auto;\n  transition: .5s ease;\n  -webkit-backface-visibility: hidden;\n          backface-visibility: hidden;\n}\n .middle {\n  transition: .5s ease;\n  opacity: 0;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n  -ms-transform: translate(-50%, -50%);\n  text-align: center;\n}\n .container:hover .image {\n  opacity: 0.3;\n}\n .container:hover .middle {\n  opacity: 1;\n}\n .text {\n  background-color: #4CAF50;\n  color: white;\n  font-size: 16px;\n  padding: 16px 32px;\n}"
 
 /***/ }),
 
@@ -603,7 +650,7 @@ module.exports = " *\n {\n     margin: 0px;\n     padding:0px;\n }\n .main\n{\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"main\">\n  <div class=\"loginBox\">\n    <img src=\"../../assets/user.png\" class=\"user\">\n    <h2>Log In Here</h2>\n    <form>\n      <p>Username</p>\n      <input [(ngModel)]=\"username\" type=\"text\" name=\"uname\" placeholder=\"Enter Username\" required>\n      <p>Password</p>\n      <input type=\"password\" [(ngModel)]=\"password\" name=\"pass\" placeholder=\"••••••\" required>\n      <input (click)=\"onSubmit($event)\" type=\"submit\" name=\"\" value=\"Sign In\">\n    </form>\n  </div>\n</div>\n"
+module.exports = "\n<div class=\"main\">\n  <div class=\"loginBox\">\n    <img src=\"../../assets/user.png\" class=\"user\">\n    <h2>Log In Here</h2>\n    <form>\n      <p>Username</p>\n      <input [(ngModel)]=\"username\" type=\"text\" name=\"uname\" placeholder=\"Enter Username\" required>\n      <p>Password</p>\n      <input type=\"password\" [(ngModel)]=\"password\" name=\"pass\" placeholder=\"••••••\" required>\n      <input (click)=\"onSubmit($event)\" type=\"submit\" name=\"\" value=\"Sign In\">\n    </form>\n  </div>\n</div>\n\n\n<div id=\"myNav\" class=\"overlay\" *ngIf=\"displayInfo\">\n    <a href=\"javascript:void(0)\" class=\"closebtn\" (click)=\"closeNav()\">&times;</a>\n    <div class=\"overlay-content\">\n     <div style=\"color:red;\n     font-size: 20px;\n     text-decoration: underline;\n     \">INSTRUCTIONS:</div>\n   \n \n\n  \n        <ul>\n          <li><p class=\"alert alert-danger\">To test SuperAdmin use:</p>\n             <br>\n             Username:buddha\n             <br>\n             Password:buddha\n          </li>\n          <li><p class=\"alert alert-danger\">To test Admin use:</p>\n              <br>\n              Username:dalailama\n              <br>\n              Password:dalailama\n           </li>\n           <li><p class=\"alert alert-danger\">To test User use:</p>\n              <br>\n              Username:krishna\n              <br>\n              Password:krishna\n           </li>\n        </ul>\n        <br>\n        <div style=\"color:red;\n        font-size: 20px;\n        text-decoration: underline;\n        \">Project Description:</div>\n     <p style=\"margin:0px;padding:0px;\">\n        Project is build using Angular and Node. I have used sqlite3 for database as it is lightweight. \n        The database consists of all the required fields.I have kept username as UNIQUE constraint and users who enter same username in registration or update forms are \n        given message to change their value when the username is found in DB.I have used express middleware for validation each request after the first login is completed.\n        After the first login the client is given a token which Angular stores in localstorage and every subsequent requests need this token for accessing the sever.\n      </p>\n        <br>\n      <p style=\"margin:0px;padding:0px;\">\n        The frontend consists of 7 components and 2 services.The frontend uses routes are protected with Route guard.\n        There are services for httpRequest and Authentication.Forms are validated using Template Driven Approach.\n         <br>\n         <br>\n         <br>\n         <br>\n        </p>\n\n        <div style=\"color:red;\n        font-size: 20px;\n        text-decoration: underline;\n        \">Screenshots:</div>\n        \n\n         \n\n         <div class=\"container\">\n            <img src=\"../../assets/frontpage.png\" alt=\"Avatar\" class=\"image\" style=\"width:100%\">\n            <div class=\"middle\">\n              <div class=\"text\">Front Page</div>\n            </div>\n          </div>\n    \n\n    <div class=\"container\">\n        <img src=\"../../assets/superadmin.png\" alt=\"Avatar\" class=\"image\" style=\"width:100%\">\n        <div class=\"middle\">\n          <div class=\"text\">SuperAdmin page</div>\n        </div>\n      </div>\n\n\n\n<div class=\"container\">\n    <img src=\"../../assets/superadmin1.png\" alt=\"Avatar\" class=\"image\" style=\"width:100%\">\n    <div class=\"middle\">\n      <div class=\"text\">SuperAdmin Dashboard</div>\n    </div>\n  </div>\n\n\n<div class=\"container\">\n    <img src=\"../../assets/usernameduplicate.png\" alt=\"Avatar\" class=\"image\" style=\"width:100%\">\n    <div class=\"middle\">\n      <div class=\"text\">Username constraint</div>\n    </div>\n  </div>\n\n  <div class=\"container\">\n      <img src=\"../../assets/user1.png\" alt=\"Avatar\" class=\"image\" style=\"width:100%\">\n      <div class=\"middle\">\n        <div class=\"text\">User Dashboard</div>\n      </div>\n    </div>\n\n    <div class=\"container\">\n        <img src=\"../../assets/accessdenied.png\" alt=\"Avatar\" class=\"image\" style=\"width:100%\">\n        <div class=\"middle\">\n          <div class=\"text\">Access Denied</div>\n        </div>\n      </div>\n\n    \n  </div>\n"
 
 /***/ }),
 
@@ -636,6 +683,7 @@ var FrontComponent = /** @class */ (function () {
     function FrontComponent(auth, router) {
         this.auth = auth;
         this.router = router;
+        this.displayInfo = true;
     }
     FrontComponent.prototype.ngOnInit = function () {
     };
@@ -651,6 +699,9 @@ var FrontComponent = /** @class */ (function () {
         });
     };
     FrontComponent.prototype.ngOnDestroy = function () {
+    };
+    FrontComponent.prototype.closeNav = function () {
+        this.displayInfo = false;
     };
     FrontComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -827,10 +878,11 @@ var HttpRequestService = /** @class */ (function () {
         this.completeUrl = "/modifyUser?id=" + credentials.id + "&token=" + credentials.token;
         if (url != undefined)
             this.completeUrl = "/" + url + "?id=" + credentials.id + "&token=" + credentials.token;
-        // this.httpclient.post(this.completeUrl,body).subscribe((data)=>{
-        //     console.log(data);
-        //   });
         return this.httpclient.post(this.completeUrl, body);
+    };
+    HttpRequestService.prototype.getUserList = function (url, credentials) {
+        this.completeUrl = "/" + url + ("?id=" + credentials.id + "&token=" + credentials.token);
+        return this.httpclient.get(this.completeUrl);
     };
     HttpRequestService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
@@ -936,7 +988,7 @@ module.exports = "input{\n    width:250px;\n    background:whitesmoke;\n}"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n <div class=\"row\">\n   <div class=\"col-xs-3\">\n <h4>Current Values</h4>\n<ul class=\"list-group\">\n  <li class=\"list-group-item\" [type]=\"'firstname'\">FirstName:  {{user.firstname}}\n      <button (click)=\"updateSingle($event)\" class=\"btn btn-primary\">EDIT</button>\n\n  </li>\n  <li  [type]=\"'lastname'\" class=\"list-group-item\">LastName: {{user.lastname}}\n      <button (click)=\"updateSingle($event)\" class=\"btn btn-primary\">EDIT</button>\n  </li>\n  <li class=\"list-group-item\"  [type]=\"'username'\">UserName: {{user.username}}\n      <button (click)=\"updateSingle($event)\" class=\"btn btn-primary\">EDIT</button>\n  </li>\n  <li class=\"list-group-item\"  [type]=\"'role'\">Role: {{user.role}}\n      <button (click)=\"updateSingle($event)\" class=\"btn btn-primary\">EDIT</button>\n  </li>\n  <li class=\"list-group-item\"  [type]=\"'email'\">Role: {{user.role}}\n    <button (click)=\"updateSingle($event)\" class=\"btn btn-primary\">EDIT</button>\n  </li>\n\n</ul>\n   </div>\n   <div class=\"col-xs-9\" #editbox>\n      <h4>PLEASE FILL THE FIELDS TO UPDATE AND LEAVE BLANK FOR OTHERS:</h4> \n    <div *ngIf=\"!singleEdit else single\">\n\n        <form>\n          <div class=\"form-group\">\n            <label for=\"fname\">FirstName:</label>\n            <input name=\"fname\" required [(ngModel)]=\"firstname\"  type=\"text\" class=\"form-control\" id=\"fname\">\n          </div>\n          <div class=\"form-group\">\n            <label for=\"lname\">LastName:</label>\n            <input required name=\"lname\" type=\"text\" [(ngModel)]=\"lastname\" class=\"form-control\" id=\"lname\">\n          </div>\n          <div class=\"form-group\">\n              <label for=\"uname\">UserName:</label>\n              <input required  name=\"uname\" type=\"text\" [(ngModel)]=\"username\" class=\"form-control\" id=\"uname\">\n            </div>\n            <div class=\"form-group\">\n                <label for=\"pwd\">Password:</label>\n                <input required name=\"pwd\" [(ngModel)]=\"password\" type=\"password\"  class=\"form-control\" id=\"lname\">\n              </div>\n          \n          <div class=\"form-group\">\n                <label for=\"role\">Email:</label>\n                <input required name=\"email\" type=\"text\" [(ngModel)]=\"email\" class=\"form-control\" id=\"email\">\n              </div>\n          <button (click)=\"haze($event)\" type=\"submit\" class=\"btn btn-primary\">Submit</button>\n        </form> \n     \n     </div>\n   </div>\n </div>  \n</div>\n<ng-template #single>\n  <form><h4 class=\"text text-primary\"> Enter new value for {{field}} </h4> <div class=\"form-group\">\n    <label for=\"\"></label>\n    <input type=\"text\" [(ngModel)]=\"value\"  name=\"haze\" class=\"form-control\" id=\"{{field}}\">\n  </div>\n  <button type=\"submit\" [name]=\"field\" (click)=\"haze($event)\" class=\"btn btn-primary\">Submit</button>\n  </form>\n</ng-template>\n\n\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-xs-3\">\n  <h4>Current Values</h4>\n <ul class=\"list-group\">\n   <li class=\"list-group-item\" [type]=\"'firstname'\">FirstName:  {{user.firstname}}\n       <button (click)=\"updateSingle($event)\" class=\"btn btn-primary\">EDIT</button>\n \n   </li>\n   <li  [type]=\"'lastname'\" class=\"list-group-item\">LastName: {{user.lastname}}\n       <button (click)=\"updateSingle($event)\" class=\"btn btn-primary\">EDIT</button>\n   </li>\n   <li class=\"list-group-item\"  [type]=\"'username'\">UserName: {{user.username}}\n       <button (click)=\"updateSingle($event)\" class=\"btn btn-primary\">EDIT</button>\n   </li>\n   <li class=\"list-group-item\"  [type]=\"'password'\">Password: *********\n       <button (click)=\"updateSingle($event)\" class=\"btn btn-primary\">EDIT</button>\n   </li>\n </ul>\n    </div>\n    <div class=\"col-xs-9\" #editbox>\n       <h4>PLEASE FILL THE FIELDS TO UPDATE AND LEAVE BLANK FOR OTHERS:</h4> \n     <div *ngIf=\"!singleEdit else single\">\n \n         <form #userform=\"ngForm\" (ngSubmit)=\"haze($event)\">\n           <div class=\"form-group\">\n             <label for=\"fname\">FirstName:</label>\n             <input required name=\"fname\" required [(ngModel)]=\"firstname\"  type=\"text\" class=\"form-control\" id=\"fname\">\n           </div>\n           <div class=\"form-group\">\n             <label for=\"lname\">LastName:</label>\n             <input required name=\"lname\" type=\"text\" [(ngModel)]=\"lastname\" class=\"form-control\" id=\"lname\">\n           </div>\n           <div class=\"form-group\">\n               <label for=\"uname\">UserName:</label>\n               <input (keyup)=\"haze1($event)\"  required  name=\"uname\" type=\"text\" [(ngModel)]=\"username\" class=\"form-control\" id=\"uname\">\n             <div [hidden]=\"usernameStatus\" class=\"alert alert-danger\">\n               Sorry Username exists  in our Database\n             </div>\n              </div>\n             <div class=\"form-group\">\n                 <label for=\"pwd\">Password:</label>\n                 <input required name=\"pwd\" [(ngModel)]=\"password\" type=\"password\"  class=\"form-control\" id=\"lname\">\n               </div>\n            \n         \n           <button [disabled]=\"!(userform.valid && usernameStatus)\"  type=\"submit\" class=\"btn btn-primary\">Submit</button>\n         </form> \n      \n      </div>\n    </div>\n  </div>  \n </div>\n <ng-template #single>\n   <form #singleForm=\"ngForm\" (ngSubmit)=\"haze(singleForm.value)\"><h4 class=\"text text-primary\"> Enter new value for {{field}} </h4> <div class=\"form-group\">\n     <label for=\"\"></label>\n     \n     <input *ngIf=\"field!=='username'\" required  [type]=\"field=='password'?'password':'text'\" ngModel name=\"value\" class=\"form-control\">\n     <input *ngIf=\"field=='username'\" (keyup)=\"haze1($event)\"  required  name=\"value\" type=\"text\" [(ngModel)]=\"username\" required class=\"form-control\" >\n             <div [hidden]=\"usernameStatus\" class=\"alert alert-danger\">\n               Sorry Username exists  in our Database\n             </div>\n    </div>\n   <button type=\"submit\" [disabled]=\"!(singleForm.valid && usernameStatus)\"  class=\"btn btn-primary\">Submit</button>\n   </form>\n </ng-template>\n \n "
 
 /***/ }),
 
@@ -951,6 +1003,8 @@ module.exports = "<div class=\"container\">\n <div class=\"row\">\n   <div class
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsereditComponent", function() { return UsereditComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_httpsevice_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/httpsevice.service */ "./src/app/services/httpsevice.service.ts");
+/* harmony import */ var _services_loginservice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/loginservice */ "./src/app/services/loginservice.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -961,9 +1015,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var UsereditComponent = /** @class */ (function () {
-    function UsereditComponent() {
+    function UsereditComponent(httpHandle, credentials) {
+        this.httpHandle = httpHandle;
+        this.credentials = credentials;
         this.dbEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.usernameList = undefined;
+        this.usernameStatus = true;
         this.singleEdit = false;
     }
     UsereditComponent.prototype.ngOnInit = function () {
@@ -972,10 +1032,10 @@ var UsereditComponent = /** @class */ (function () {
         this.singleEdit = true;
         this.field = event.target.parentElement.getAttribute('type');
     };
-    UsereditComponent.prototype.haze = function (event) {
+    UsereditComponent.prototype.haze = function (formValue) {
         if (this.singleEdit) {
             var obj = {};
-            obj[this.field] = this.value;
+            obj[this.field] = formValue.value;
             obj["type"] = 1;
             obj["id"] = this.user.UID;
             obj["update"] = true;
@@ -990,14 +1050,25 @@ var UsereditComponent = /** @class */ (function () {
                 lastname: this.lastname,
                 username: this.username,
                 password: this.password,
-                email: this.email
             });
         }
-        this.firstname = "";
-        this.lastname = "";
-        this.email = "";
-        this.username = "";
-        this.password = "";
+    };
+    UsereditComponent.prototype.haze1 = function (event) {
+        var _this = this;
+        this.usernameStatus = true;
+        if (this.usernameList == undefined)
+            this.httpHandle.getUserList('users/0/1', {
+                id: this.credentials.getToken.id,
+                token: this.credentials.getToken.token
+            }).subscribe(function (data) {
+                _this.usernameList = data.result.map(function (element) { return element.username; });
+                if (_this.usernameList.indexOf(_this.username) != -1)
+                    _this.usernameStatus = false;
+            });
+        else {
+            if (this.usernameList.indexOf(this.username) != -1)
+                this.usernameStatus = false;
+        }
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])('toEdit'),
@@ -1017,7 +1088,7 @@ var UsereditComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./useredit.component.html */ "./src/app/useredit/useredit.component.html"),
             styles: [__webpack_require__(/*! ./useredit.component.css */ "./src/app/useredit/useredit.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_services_httpsevice_service__WEBPACK_IMPORTED_MODULE_1__["HttpRequestService"], _services_loginservice__WEBPACK_IMPORTED_MODULE_2__["AuthenticationService"]])
     ], UsereditComponent);
     return UsereditComponent;
 }());
